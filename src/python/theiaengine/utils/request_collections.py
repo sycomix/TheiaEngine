@@ -71,7 +71,7 @@ class TheiaClient:
         self.__theia_url = theia_url
     
     def inference(self, payload: TheiaPayload) -> TheiaResponse:
-        file_name = ''.join(random.choice(string.ascii_letters) for i in range(12))
+        file_name = ''.join(random.choice(string.ascii_letters) for _ in range(12))
         files = [
             ("files", (f"{file_name}.jpg", payload.image))
         ]
@@ -89,7 +89,11 @@ class TheiaClient:
             }, timeout=600
         )
 
-        response_dict = dict(r.json()) if r.status_code in [200, 202, 400, 401, 500] else {"message": "An error occured"}
+        response_dict = (
+            dict(r.json())
+            if r.status_code in {200, 202, 400, 401, 500}
+            else {"message": "An error occured"}
+        )
 
         return TheiaResponse(
             status_code=r.status_code, response=response_dict

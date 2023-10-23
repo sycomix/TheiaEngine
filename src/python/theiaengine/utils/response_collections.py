@@ -17,6 +17,10 @@ class TheiaResult:
 
 class TheiaResponse:
     def __init__(self, response: Dict[str, Union[str, List[Any], Dict[str, Any]]], status_code: int):
-        self.status: TheiaResponseStatus = TheiaResponseStatus.SUCCESS if status_code in [200, 202] else TheiaResponseStatus.FAILED
+        self.status: TheiaResponseStatus = (
+            TheiaResponseStatus.SUCCESS
+            if status_code in {200, 202}
+            else TheiaResponseStatus.FAILED
+        )
         self.result: TheiaResult = None if self.status == TheiaResponseStatus.FAILED else TheiaResult(response["result"])
         self.message: str = response["message"]
